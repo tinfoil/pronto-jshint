@@ -3,13 +3,12 @@ require 'jshintrb'
 
 module Pronto
   class JSHint < Runner
-    def run(patches, commit)
+    def run
       return [] unless patches
 
-      patches.select { |patch| patch.additions > 0 }
-             .select { |patch| js_file?(patch.new_file_full_path) }
-             .map { |patch| inspect(patch) }
-             .flatten.compact
+      patches_with_additions.select { |patch| js_file?(patch.new_file_full_path) }
+                            .map { |patch| inspect(patch) }
+                            .flatten.compact
     end
 
     def inspect(patch)
